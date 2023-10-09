@@ -1,3 +1,6 @@
+This Project is based on the react-redux.
+The data is get from store.jsx
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
