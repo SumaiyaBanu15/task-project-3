@@ -18,17 +18,38 @@ import { add, remove } from './redux/cardsSlice';
 
 function App() {
   const cards = useSelector((state)=>state.cards)
-  console.log(cards);
-  const dispatch = useDispatch();
-  const [data,setData] = useState();
 
-  const handleDelete = (index)=>{
-    dispatch(remove(index));
-}
+  const dispatch = useDispatch();
+  const [data,setData] = useState({
+    title:'',
+    body:''
+  });
+
+  // Function to generate a ID for new Cards
+  const generateId = ()=> {
+    const existingId = cards.map((card)=>card.id);
+    let newId = 1;
+    while(existingId.includes(newId)){
+      newId++;
+    }
+    return newId;
+  }
+
  
 const handleSubmit = (values)=>{
-  dispatch(add(values));
+  // Generate a ID for the new card
+  const newCardId = generateId();
+  const newCard = {
+    id: newCardId, ...values
+  }
+  dispatch(add(newCard));
+  setData({title:'', body:''})
 };
+
+const handleDelete = (id)=>{
+  dispatch(remove(id));
+}
+
 const UserSchema = Yup.object().shape({
   title:Yup.string().required("Title is Required"),
   body:Yup.string().required("Body is Required")
@@ -103,25 +124,25 @@ return <>
   <Col>
   <div className='d-flex gap-2 p-2 mt-2 cardConatiner'>
   {
-   cards.map((e,index)=> {
-    return <div className='cardsGroup' key={index}>
+   cards.map((card)=> {
+    return <div className='cardsGroup' key={card.id}>
     <Card className='contentCards'>
-      <Card.Title className='ps-3 pt-2 d-flex imgTitle' style={{color:'#203562'}}>{e.title} 
+      <Card.Title className='ps-3 pt-2 d-flex imgTitle' style={{color:'#203562'}}>{card.title} 
       <div className='images'>
           <div className='edit-Card'>
-          <Link to = {`edit/${index}`} state={{title:e.title, body:e.body}}>
+          <Link to = {`edit/${card.id}`} state={{title:card.title, body:card.body}}>
           <img src='/Icons/edit.svg'/>
           </Link>
            &nbsp;
           </div>
           <div className='delete-Card'>
-          <img src='/Icons/delete.svg' onClick={()=>handleDelete(index)} />
+          <img src='/Icons/delete.svg' onClick={()=>handleDelete(card.id)} />
           </div>   
       </div>      
       </Card.Title>
       <Card.Body>
       <Card.Text>
-      {e.body}
+      {card.body}
       </Card.Text>
       </Card.Body>
     </Card>

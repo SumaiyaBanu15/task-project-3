@@ -1,4 +1,4 @@
-import React,{ useEffect, useState} from 'react'
+import React,{useState} from 'react'
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -20,17 +20,21 @@ const { id } = params;
 const dispatch = useDispatch();
 // Get the card data from Redux
 const cards = useSelector((state)=>state.cards)
-console.log(cards);
+
 // Find the card based on the Id
 const card = cards.find((c) => c.id === parseInt(id));
 
-const {title: initialTitle = '',body:initialBody = ''} = card || {};
-const [initialValue,setInitialValue] = useState({
-  title : initialTitle,
-  body : initialBody})
+// const {title: initialTitle = '',body:initialBody = ''} = card || {};
+// const [initialValue,setInitialValue] = useState({
+//   title : initialTitle,
+//   body : initialBody})
 
+const initialValue = {
+  title : card ? card.title : '',
+  body : card ? card.body : ''
+}
 const handleSubmit = (values)=>{
-  dispatch(edit({id:parseInt(id), updatedData : values }));
+  dispatch(edit({id:parseInt(id), updateddata : values }));
   navigate('/app')
 }
 
@@ -56,7 +60,7 @@ return <div className='row-cards'>
     initialValues={initialValue}
     validationSchema={UserSchema}
     enableReinitialize={true}
-    onSubmit={{handleSubmit}}>
+    onSubmit={handleSubmit}>
  
  {({ values,errors,touched,handleBlur,handleSubmit,handleChange})=>(  
   <Form onSubmit={handleSubmit}>

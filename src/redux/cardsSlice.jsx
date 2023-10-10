@@ -21,15 +21,20 @@ export const cardsSlice = createSlice({
     ],
     reducers:{
         add:(state,action)=>{
-            state.push(action.payload)
+            const newCard = action.payload;
+            state.push(newCard)
         },
         remove:(state,action)=>{
-            state.pop(action.payload)
+           const cardRemove = action.payload;
+           return state.filter((card)=>card.id !== cardRemove);
         },
         edit:(state,action)=>{
-            const editedCard = state.findIndex((card)=> card.id === action.payload.id);
-            if(editedCard !== -1){
-                state[editedCard] = {...state[editedCard], ...action.payload.updateddata };
+            const {id, updateddata }=action.payload;
+            const editedCardIndex = state.findIndex((card) =>card.id === id);
+
+            if(editedCardIndex !== -1){
+                const editedCard = {...state[editedCardIndex], ...updateddata };
+                state[editedCardIndex] = editedCard;
             }
         },
         toggle:(state,action)=>{
