@@ -36,7 +36,7 @@ function App() {
   }
 
  
-const handleSubmit = (values)=>{
+const handleSubmit = (values,{ resetForm })=>{
   // Generate a ID for the new card
   const newCardId = generateId();
   const newCard = {
@@ -44,6 +44,7 @@ const handleSubmit = (values)=>{
   }
   dispatch(add(newCard));
   setData({title:'', body:''})
+  resetForm({values: {title:"", body:""} })
 };
 
 const handleDelete = (id)=>{
@@ -94,6 +95,10 @@ return <>
       <br />
         <Button variant="primary" type='submit'>
         Submit
+      </Button>
+       &nbsp;&nbsp;
+       <Button variant="primary" type='reset'>
+        Reset
       </Button>
       </Card.Body>
       </Form.Group>          
