@@ -127,7 +127,7 @@ return <>
 
   <Row>
   <Col>
-  <div className='d-flex gap-2 p-2 mt-2 cardConatiner'>
+  <div className='d-flex gap-2 p-2 mt-2 cardContainer'>
   {
    cards.map((card)=> {
     return <div className='cardsGroup' key={card.id}>
